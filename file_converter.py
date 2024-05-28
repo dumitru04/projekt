@@ -1,6 +1,7 @@
 # file_converter.py
 import argparse
 import json
+import yaml
 from jsonschema import validate, ValidationError
 
 def parse_arguments():
@@ -29,6 +30,24 @@ def load_json(file_path):
             return None
         return data
 
+def load_yaml(file_path):
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+        schema = {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "age": {"type": "number"}
+            },
+            "required": ["name", "age"]
+        }
+        try:
+            validate(instance=data, schema=schema)
+        except ValidationError as e:
+            print(f"Validation error: {e.message}")
+            return None
+        return data
+
 def save_json(data, file_path):
     with open(file_path, 'w') as file:
         json.dump(data, file, indent=4)
@@ -39,4 +58,8 @@ if __name__ == "__main__":
        data = load_json(args.input_file)
        if data and args.output_format == "json":
            save_json(data, args.output_file)
+    if args.input_format == "yml":
+        data = load_yaml(args.input_file)
+        if data:
+            print(data)
     print(args)
