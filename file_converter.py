@@ -52,14 +52,10 @@ def save_json(data, file_path):
     with open(file_path, 'w') as file:
         json.dump(data, file, indent=4)
 
+def save_yaml(data, file_path):
+    with open(file_path, 'w') as file:
+        yaml.dump(data, file)
+
 if __name__ == "__main__":
     args = parse_arguments()
-    if args.input_format == "json":
-       data = load_json(args.input_file)
-       if data and args.output_format == "json":
-           save_json(data, args.output_file)
-    if args.input_format == "yml":
-        data = load_yaml(args.input_file)
-        if data:
-            print(data)
     print(args)
