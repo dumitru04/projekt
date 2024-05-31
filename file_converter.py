@@ -65,6 +65,10 @@ def save_yaml(data, file_path):
     with open(file_path, 'w') as file:
         yaml.dump(data, file)
 
+def save_xml(data, file_path):
+       tree = ET.ElementTree(data)
+       tree.write(file_path)
+
 if __name__ == "__main__":
     args = parse_arguments()
     print(args)
