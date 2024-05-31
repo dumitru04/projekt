@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from jsonschema import validate, ValidationError
 from PyQt5 import QtWidgets
 import sys
+import asyncio
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Konwerter plików")
@@ -71,6 +72,22 @@ def save_xml(data, file_path):
        tree = ET.ElementTree(data)
        tree.write(file_path)
 
+async def load_file_async(file_path, format):
+       if format == "json":
+           return load_json(file_path)
+       elif format == "yml":
+           return load_yaml(file_path)
+       elif format == "xml":
+           return load_xml(file_path)
+
+async def save_file_async(data, file_path, format):
+       if format == "json":
+           save_json(data, file_path)
+       elif format == "yml":
+           save_yaml(data, file_path)
+       elif format == "xml":
+           save_xml(data, file_path)
+
 class ConverterApp(QtWidgets.QWidget):
        def __init__(self):
            super().__init__()
@@ -105,4 +122,8 @@ def main():
        sys.exit(app.exec_())
 
 if __name__ == "__main__":
-       main()
+    args = parse_arguments()
+    loop = asyncio.get_event_loop()
+    data = loop.run_until_complete(load_file_async(args.input_file, args.input_format))
+    if data:
+        loop.run_until_complete(save_file_async(data, args.output_file, args.output_format))
