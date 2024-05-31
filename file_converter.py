@@ -4,6 +4,8 @@ import json
 import yaml
 import xml.etree.ElementTree as ET
 from jsonschema import validate, ValidationError
+from PyQt5 import QtWidgets
+import sys
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Konwerter plików")
@@ -69,6 +71,38 @@ def save_xml(data, file_path):
        tree = ET.ElementTree(data)
        tree.write(file_path)
 
+class ConverterApp(QtWidgets.QWidget):
+       def __init__(self):
+           super().__init__()
+           self.initUI()
+
+       def initUI(self):
+           self.inputFileLabel = QtWidgets.QLabel('Input File:', self)
+           self.inputFileLabel.move(20, 20)
+           self.inputFileEdit = QtWidgets.QLineEdit(self)
+           self.inputFileEdit.move(100, 20)
+
+           self.outputFileLabel = QtWidgets.QLabel('Output File:', self)
+           self.outputFileLabel.move(20, 60)
+           self.outputFileEdit = QtWidgets.QLineEdit(self)
+           self.outputFileEdit.move(100, 60)
+
+           self.convertButton = QtWidgets.QPushButton('Convert', self)
+           self.convertButton.move(20, 100)
+           self.convertButton.clicked.connect(self.convert)
+
+           self.setGeometry(300, 300, 300, 150)
+           self.setWindowTitle('File Converter')
+           self.show()
+
+       def convert(self):
+           input_file = self.inputFileEdit.text()
+           output_file = self.outputFileEdit.text()
+
+def main():
+       app = QtWidgets.QApplication(sys.argv)
+       ex = ConverterApp()
+       sys.exit(app.exec_())
+
 if __name__ == "__main__":
-    args = parse_arguments()
-    print(args)
+       main()
