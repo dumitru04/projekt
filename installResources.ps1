@@ -1,2 +1,3 @@
 # installResources.ps1
-pip install pyyaml jsonschema
+pip install pyinstaller pyyaml jsonschema
+
