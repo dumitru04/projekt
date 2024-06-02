@@ -18,7 +18,7 @@ jobs:
           python-version: '3.x'
       - name: Install dependencies
         run: |
-          pip install pyinstaller pyyaml jsonschema
+          pip install pyinstaller pyyaml jsonschema pyqt5
       - name: Build project
         run: pyinstaller --onefile --noconsole file_converter.py
       - name: Upload artifact
