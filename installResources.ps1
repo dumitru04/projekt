@@ -1,3 +1,3 @@
 # installResources.ps1
-pip install pyinstaller pyyaml jsonschema
+pip install pyinstaller pyyaml jsonschema pyqt5
 
